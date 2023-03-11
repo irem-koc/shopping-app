@@ -1,10 +1,15 @@
 import React from "react";
 import "./Cart.css";
-const Cart = ({ cartItems,handleAddProduct,handleRemoveProduct }) => {
+const Cart = ({ cartItems,handleAddProduct,handleRemoveProduct,handleCartClearence }) => {
     const totalPrice = cartItems.reduce((price,item)=>price+ item.quantity*item.price, 0)
     return (
         <div className="cart-items">
-            <div className="cart-items-header">Cart Items</div>
+            <h2 className="cart-items-header">Cart Items</h2>
+            <div className="clear-cart">
+                {cartItems.length >=1 && (
+                    <button className="clear-cart-button" onClick={handleCartClearence}>Clear Cart</button>
+                )}
+            </div>
             {cartItems.length === 0 && (
                 <div className="cart-items-empty">No items are added</div>
             )}

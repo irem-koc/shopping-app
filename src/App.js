@@ -8,6 +8,9 @@ import Signup from "./components/Signup/Signup";
 const App = () => {
     const productItem = data.productItems;
     const [cartItems, setCartItems] = useState([]);
+    const handleCartClearence = () =>{
+        setCartItems([])
+    }
     const handleAddProduct = (product) => {
         const productExist = cartItems.find((item) => item.id === product.id);
         if (productExist) {
@@ -45,7 +48,7 @@ const App = () => {
     return (
         <div>
             <BrowserRouter>
-                <Header />
+                <Header cartItems={cartItems}/>
                 <Routes>
                     <Route
                         path="/"
@@ -65,6 +68,7 @@ const App = () => {
                                 cartItems={cartItems}
                                 handleAddProduct={handleAddProduct}
                                 handleRemoveProduct={handleRemoveProduct}
+                                handleCartClearence={handleCartClearence}
                             />
                         }
                         exact

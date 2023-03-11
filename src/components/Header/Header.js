@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import "./Header.css";
-const Header = () => {
+const Header = ({cartItems}) => {
     return (
         <header className="header">
             <div>
@@ -25,6 +25,7 @@ const Header = () => {
                 <ul>
                     <li>
                         <Link to="/cart" className="cart">
+                            {cartItems.length}
                             <i className="fa fa-shopping-cart" />
                         </Link>
                     </li>
