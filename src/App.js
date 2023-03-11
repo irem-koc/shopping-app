@@ -1,25 +1,78 @@
-import logo from './logo.svg';
-import './App.css';
-
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
+import React, { useState } from "react";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import data from "./back/Data/Data";
+import Cart from "./components/Cart/Cart";
+import Header from "./components/Header/Header";
+import Products from "./components/Products/Products";
+import Signup from "./components/Signup/Signup";
+const App = () => {
+    const productItem = data.productItems;
+    const [cartItems, setCartItems] = useState([]);
+    const handleAddProduct = (product) => {
+        const productExist = cartItems.find((item) => item.id === product.id);
+        if (productExist) {
+            setCartItems(
+                cartItems.map((item) =>
+                    item.id === product.id
+                        ? {
+                              ...productExist,
+                              quantity: productExist.quantity + 1,
+                          }
+                        : item
+                )
+            );
+        } else {
+            setCartItems([...cartItems, { ...product, quantity: 1 }]);
+        }
+    };
+    const handleRemoveProduct = (product) => {
+        const productExist = cartItems.find((item) => item.id === product.id);
+        if (productExist.quantity === 1) {
+            setCartItems(cartItems.filter((item) => item.id !== product.id));
+        } else {
+            setCartItems(
+                cartItems.map((item) =>
+                    item.id === product.id
+                        ? {
+                              ...productExist,
+                              quantity: productExist.quantity - 1,
+                          }
+                        : item
+                )
+            );
+        }
+    };
+    return (
+        <div>
+            <BrowserRouter>
+                <Header />
+                <Routes>
+                    <Route
+                        path="/"
+                        element={
+                            <Products
+                                productItem={productItem}
+                                handleAddProduct={handleAddProduct}
+                            />
+                        }
+                        exact
+                    />
+                    <Route path="/signup" element={<Signup />} exact />
+                    <Route
+                        path="/cart"
+                        element={
+                            <Cart
+                                cartItems={cartItems}
+                                handleAddProduct={handleAddProduct}
+                                handleRemoveProduct={handleRemoveProduct}
+                            />
+                        }
+                        exact
+                    />
+                </Routes>
+            </BrowserRouter>
+        </div>
+    );
+};
 
 export default App;
